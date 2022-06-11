@@ -1,4 +1,5 @@
 const express = require('express');
+const App = require('.');
 const db = require('./db/connection');
 const PORT = process.env.PORT || 3001;
 const app = express()
@@ -19,5 +20,6 @@ db.connect(err => {
     console.log('Database connected.');
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`);
+        new App().initializeApp();
     });
 });
