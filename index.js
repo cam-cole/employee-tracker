@@ -54,7 +54,9 @@ App.prototype.viewAllDepartments = function() {
 }
 
 App.prototype.viewAllRoles = function() {
-    let sql = `SELECT * FROM role`;
+    let sql = `SELECT role.id, role.title, role.salary, department.name AS department
+               FROM role
+               LEFT JOIN department ON role.department_id = department.id`;
     db.query(sql, (err, rows) => {
         if (err) {
             res.status(500).json({ error: err.message });
@@ -80,6 +82,38 @@ App.prototype.addDepartment = function() {
             name: 'departmentName',
             message: 'What is the name of the department?'
         })
+        .then(({ departmentName }) => {
+            let sql = `INSERT INTO department (name)
+                       VALUES (?)`;
+            let params = departmentName;
+
+            db.query(sql, params, (err, result) => {
+                if (err) {
+                    res.status(400).json({ error: err.message });
+                    return;
+                }
+                console.log(`Added ${departmentName} to the database`)
+            })
+        })
+}
+
+App.prototype.addRole = function() {
+    inquirer
+        .prompt([{
+            type: 'text',
+            name: 'roleName',
+            message: 'What is the name of the role?'
+        },
+        {
+            type: 'text',
+            name: 'roleSalary',
+            message: 'What is the salary for the role?'
+        },
+        {
+            type: 'text',
+            name: 'roleDeparment',
+            message: 'What department does the role belong to?',
+        }])
         .then(({ departmentName }) => {
             let sql = `INSERT INTO department (name)
                        VALUES (?)`;

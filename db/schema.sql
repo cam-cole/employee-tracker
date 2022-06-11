@@ -16,7 +16,7 @@ CREATE TABLE role (
 
 CREATE TABLE employee (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
-    fist_name VARCHAR(30),
+    first_name VARCHAR(30),
     last_name VARCHAR(30),
     role_id INTEGER,
     manager_id INTEGER
